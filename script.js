@@ -1,74 +1,121 @@
-function addTask(){
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-const taskInput =
-document.getElementById("taskInput");
+function saveTasks() {
+localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
-const taskDate =
-document.getElementById("taskDate");
+function addTask() {
 
-if(taskInput.value === ""){
+const taskInput = document.getElementById("taskInput");
+const taskDate = document.getElementById("taskDate");
+const taskTime = document.getElementById("taskTime");
+
+if(taskInput.value.trim()===""){
 alert("Enter a task");
 return;
 }
 
-const li =
-document.createElement("li");
+tasks.push({
+text: taskInput.value,
+date: taskDate.value,
+time: taskTime.value,
+completed:false
+});
 
-li.innerHTML = `
-<span>
-${taskInput.value}
-<br>
-<small>${taskDate.value}</small>
-</span>
+saveTasks();
+displayTasks();
 
-<div>
-<button onclick="completeTask(this)">✓</button>
+taskInput.value="";
+taskDate.value="";
+taskTime.value="";
+}
 
-<button onclick="editTask(this)">Edit</button>
+function displayTasks(){
 
-<button onclick="deleteTask(this)">Delete</button>
+const taskList=document.getElementById("taskList");
+
+taskList.innerHTML="";
+
+tasks.forEach((task,index)=>{
+
+const div=document.createElement("div");
+
+div.className=`task ${task.completed ? "completed" : ""}`;
+
+div.innerHTML=`
+
+<div class="task-info">
+
+<h3 class="task-text">${task.text}</h3>
+
+<small>📅 ${task.date || "No Date"}</small>
+
+<small>⏰ ${task.time || "No Time"}</small>
+
+</div>
+
+<div class="task-buttons">
+
+<button class="complete"
+onclick="toggleTask(${index})">
+
+${task.completed ? "Undo" : "Done"}
+
+</button>
+
+<button class="edit"
+onclick="editTask(${index})">
+
+Edit
+
+</button>
+
+<button class="delete"
+onclick="deleteTask(${index})">
+
+Delete
+
+</button>
+
 </div>
 `;
 
-document
-.getElementById("taskList")
-.appendChild(li);
+taskList.appendChild(div);
 
-taskInput.value = "";
-taskDate.value = "";
+});
 }
 
-function completeTask(btn){
+function toggleTask(index){
 
-btn.parentElement.parentElement
-.classList.toggle("completed");
+tasks[index].completed=
+!tasks[index].completed;
 
+saveTasks();
+displayTasks();
 }
 
-function deleteTask(btn){
+function editTask(index){
 
-btn.parentElement.parentElement
-.remove();
-
-}
-
-function editTask(btn){
-
-let li =
-btn.parentElement.parentElement;
-
-let taskText =
-li.querySelector("span").childNodes[0]
-.textContent.trim();
-
-let newTask =
-prompt("Edit Task", taskText);
+const newTask=prompt(
+"Edit Task",
+tasks[index].text
+);
 
 if(newTask){
 
-li.querySelector("span").childNodes[0]
-.textContent = newTask + " ";
+tasks[index].text=newTask;
 
+saveTasks();
+displayTasks();
+}
 }
 
+function deleteTask(index){
+
+tasks.splice(index,1);
+
+saveTasks();
+displayTasks();
 }
+
+displayTasks();
