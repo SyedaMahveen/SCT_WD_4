@@ -2,55 +2,145 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial,sans-serif;
+font-family:'Segoe UI',sans-serif;
 }
 
 body{
-background:#1e1e2f;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-min-height:100vh;
+
+background:linear-gradient(
+135deg,
+#667eea,
+#764ba2,
+#6a11cb,
+#2575fc
+);
+
+background-size:400% 400%;
+animation:bg 10s ease infinite;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
 .container{
-background:white;
-padding:25px;
-border-radius:15px;
-width:600px;
+width:90%;
+max-width:800px;
+
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(15px);
+
+padding:30px;
+border-radius:20px;
+
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
+
+color:white;
 }
 
 h1{
 text-align:center;
-margin-bottom:20px;
+margin-bottom:25px;
 }
 
-.input-section{
-display:flex;
+.task-input{
+display:grid;
+grid-template-columns:2fr 1fr 1fr auto;
 gap:10px;
-margin-bottom:20px;
+margin-bottom:25px;
 }
 
-input{
-padding:10px;
+.task-input input{
+padding:12px;
+border:none;
+border-radius:10px;
+outline:none;
 }
 
-button{
-padding:10px;
+.task-input button{
+padding:12px 20px;
+border:none;
+border-radius:10px;
+background:#00e676;
+color:black;
+font-weight:bold;
 cursor:pointer;
+transition:0.3s;
 }
 
-li{
+.task-input button:hover{
+transform:scale(1.05);
+}
+
+.task{
+background:rgba(255,255,255,0.2);
+padding:15px;
+border-radius:12px;
+margin-bottom:15px;
+
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin:10px 0;
-padding:10px;
-background:#f2f2f2;
-border-radius:8px;
+flex-wrap:wrap;
 }
 
-.completed{
+.task.completed .task-text{
 text-decoration:line-through;
-color:gray;
+opacity:0.6;
+}
+
+.task-info{
+display:flex;
+flex-direction:column;
+gap:5px;
+}
+
+.task-buttons{
+display:flex;
+gap:10px;
+}
+
+.task-buttons button{
+padding:8px 12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.complete{
+background:#00e676;
+}
+
+.edit{
+background:#ffd54f;
+}
+
+.delete{
+background:#ff5252;
+color:white;
+}
+
+@media(max-width:768px){
+
+.task-input{
+grid-template-columns:1fr;
+}
+
+.task{
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+}
+
+.task-buttons{
+width:100%;
+justify-content:space-between;
+}
 }
